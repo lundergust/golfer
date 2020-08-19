@@ -6,7 +6,7 @@
             "url": "https://sc.cps.golf/MeadowbrookMNv3/Home/nIndex?CourseId=14&Date=2020-8-20&Time=AnyTime&Player=99&Hole=Any",
             "id": "0",
             "distance": 8,
-            "enabled": 1,
+            "enabled": 0,
             "pcc": 1,
             "datetag": "2020-8-20",
             "playertag": "Player=99",
@@ -17,7 +17,7 @@
             "url": "https://sc.cps.golf/TheodoreWirthv3/(S(gzgwgagfz3fsjygkfhjfzzxn))/Home/nIndex?CourseId=17&Date=2020-8-20&Time=AnyTime&Player=99&Hole=Any",
             "id": "1",
             "distance": 8,
-            "enabled": 1,
+            "enabled": 0,
             "pcc": 1,
             "datetag": "2020-8-20",
             "playertag": "Player=99",
@@ -110,39 +110,6 @@
             "datetag": "2020-8-20",
             "playertag": "Player=99",
             "soup": 1
-        },
-        "10": {
-            "name": "",
-            "url": "",
-            "id": "10",
-            "distance": 0,
-            "enabled": 0,
-            "pcc": 1,
-            "datetag": "2020-8-20",
-            "playertag": "Player=99",
-            "soup": 0
-        },
-        "11": {
-            "name": "",
-            "url": "",
-            "id": "11",
-            "distance": 0,
-            "enabled": 0,
-            "pcc": 1,
-            "datetag": "2020-8-20",
-            "playertag": "Player=99",
-            "soup": 0
-        },
-        "12": {
-            "name": "",
-            "url": "",
-            "id": "12",
-            "distance": 0,
-            "enabled": 0,
-            "pcc": 1,
-            "datetag": "2020-8-20",
-            "playertag": "Player=99",
-            "soup": 0
         }
     }
 }

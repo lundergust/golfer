@@ -57,6 +57,11 @@ def main():
             for course in courselist['sources']:
                 courselist['sources'][course]['enabled'] = 1
             print("All courses have been enabled.")
+        elif args.enable == "pcc":
+            for course in courselist['sources']:
+                if courselist['sources'][course]['pcc'] == 1:
+                    courselist['sources'][course]['enabled'] = 1
+            print("All PCC courses have been enabled.")
         else:
             try:
                 courselist['sources'][args.enable]['enabled'] = 1
@@ -70,6 +75,11 @@ def main():
             for course in courselist['sources']:
                 courselist['sources'][course]['enabled'] = 0
             print("All courses have been disabled.")
+        elif args.disable == "pcc":
+            for course in courselist['sources']:
+                if courselist['sources'][course]['pcc'] == 1:
+                    courselist['sources'][course]['enabled'] = 0
+            print("All PCC courses have been disabled.")
         else:
             try:
                 courselist['sources'][args.disable]['enabled'] = 0
