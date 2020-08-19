@@ -1,0 +1,148 @@
+{
+    "settings": {},
+    "sources": {
+        "0": {
+            "name": "Meadowbrook",
+            "url": "https://sc.cps.golf/MeadowbrookMNv3/Home/nIndex?CourseId=14&Date=2020-8-20&Time=AnyTime&Player=99&Hole=Any",
+            "id": "0",
+            "distance": 8,
+            "enabled": 1,
+            "pcc": 1,
+            "datetag": "2020-8-20",
+            "playertag": "Player=99",
+            "soup": 1
+        },
+        "1": {
+            "name": "Theodore Wirth",
+            "url": "https://sc.cps.golf/TheodoreWirthv3/(S(gzgwgagfz3fsjygkfhjfzzxn))/Home/nIndex?CourseId=17&Date=2020-8-20&Time=AnyTime&Player=99&Hole=Any",
+            "id": "1",
+            "distance": 8,
+            "enabled": 1,
+            "pcc": 1,
+            "datetag": "2020-8-20",
+            "playertag": "Player=99",
+            "soup": 1
+        },
+        "2": {
+            "name": "Hiawatha",
+            "url": "https://sc.cps.golf/HiawathaV3/Home/nIndex?CourseId=11&Date=2020-8-20&Time=AnyTime&Player=99&Hole=Any",
+            "id": "2",
+            "distance": 8,
+            "enabled": 0,
+            "pcc": 1,
+            "datetag": "2020-8-20",
+            "playertag": "Player=99",
+            "soup": 1
+        },
+        "3": {
+            "name": "Gross National",
+            "url": "https://sc.cps.golf/GrossNationalv3/Home/nIndex?CourseId=5&Date=2020-8-20&Time=AnyTime&Player=99&Hole=Any",
+            "id": "3",
+            "distance": 8,
+            "enabled": 0,
+            "pcc": 1,
+            "datetag": "2020-8-20",
+            "playertag": "Player=99",
+            "soup": 1
+        },
+        "4": {
+            "name": "Les Bolstad",
+            "url": "https://foreupsoftware.com/index.php/api/booking/times?time=all&date=08-20-2020&holes=18&players=1&booking_class=false&schedule_id=2166&schedule_ids%5B%5D=0&schedule_ids%5B%5D=2166&specials_only=0&api_key=no_limits",
+            "id": "4",
+            "distance": 9,
+            "enabled": 0,
+            "pcc": 1,
+            "datetag": "2020-8-20",
+            "playertag": "players=1",
+            "soup": 0
+        },
+        "5": {
+            "name": "Highland National",
+            "url": "https://secure.east.prophetservices.com/HighlandNationalV3/(S(plv5ey1ivbmxmugwsmdg0kgp))/Home/nIndex?CourseId=3&Date=2020-8-20&Time=AnyTime&Player=99&Hole=Any",
+            "id": "5",
+            "distance": 11,
+            "enabled": 0,
+            "pcc": 1,
+            "datetag": "2020-8-20",
+            "playertag": "Player=99",
+            "soup": 1
+        },
+        "6": {
+            "name": "Como Park",
+            "url": "https://secure.east.prophetservices.com/ComoV3/(S(pdgaosxfpom3dioihommkgyf))/Home/nIndex?CourseId=1&Date=2020-8-20&Time=AnyTime&Player=99&Hole=Any",
+            "id": "6",
+            "distance": 11,
+            "enabled": 0,
+            "pcc": 0,
+            "datetag": "2020-8-20",
+            "playertag": "Player=99",
+            "soup": 1
+        },
+        "7": {
+            "name": "Valleywood",
+            "url": "https://secure.east.prophetservices.com/ValleywoodV3/Home/nIndex?CourseId=3&Date=2020-8-20&Time=AnyTime&Player=99&Hole=Any",
+            "id": "7",
+            "distance": 19,
+            "enabled": 0,
+            "pcc": 1,
+            "datetag": "2020-8-20",
+            "playertag": "Player=99",
+            "soup": 1
+        },
+        "8": {
+            "name": "Chomonix",
+            "url": "https://www.chronogolf.com/marketplace/clubs/8349/teetimes?date=2020-08-20&course_id=9640&affiliation_type_ids%5B%5D=34218&affiliation_type_ids%5B%5D=34218&affiliation_type_ids%5B%5D=34218&affiliation_type_ids%5B%5D=34218&nb_holes=18",
+            "id": "8",
+            "distance": 22,
+            "enabled": 0,
+            "pcc": 1,
+            "datetag": "2020-8-20",
+            "playertag": "Player=99",
+            "soup": 0
+        },
+        "9": {
+            "name": "The Links at Northfork",
+            "url": "https://the-links-at-northfork.book.teeitup.com/?date=2020-08-20",
+            "id": "9",
+            "distance": 30,
+            "enabled": 0,
+            "pcc": 1,
+            "datetag": "2020-8-20",
+            "playertag": "Player=99",
+            "soup": 1
+        },
+        "10": {
+            "name": "",
+            "url": "",
+            "id": "10",
+            "distance": 0,
+            "enabled": 0,
+            "pcc": 1,
+            "datetag": "2020-8-20",
+            "playertag": "Player=99",
+            "soup": 0
+        },
+        "11": {
+            "name": "",
+            "url": "",
+            "id": "11",
+            "distance": 0,
+            "enabled": 0,
+            "pcc": 1,
+            "datetag": "2020-8-20",
+            "playertag": "Player=99",
+            "soup": 0
+        },
+        "12": {
+            "name": "",
+            "url": "",
+            "id": "12",
+            "distance": 0,
+            "enabled": 0,
+            "pcc": 1,
+            "datetag": "2020-8-20",
+            "playertag": "Player=99",
+            "soup": 0
+        }
+    }
+}
