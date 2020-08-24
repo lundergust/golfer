@@ -1,4 +1,5 @@
 import urllib.request
+import requests
 from bs4 import BeautifulSoup
 import json
 import os
@@ -10,19 +11,6 @@ from datetime import datetime, date, time, timedelta
 
 
 def main():
-    # get todays date
-    today = datetime.today().strftime('%Y-%m-%d')
-    tomorrow = datetime.today() + timedelta(days=1)
-    tomorrow = tomorrow.strftime('%Y-%m-%d')
-    if today[5] == "0":
-        today = today[:5] + today[6:]
-    if today[7] == "0":
-        today = today[:7] + today[8:]
-    if tomorrow[5] == "0":
-        tomorrow = tomorrow[:5] + tomorrow[6:]
-    if tomorrow[7] == "0":
-        tomorrow = tomorrow[:7] + tomorrow[8:]
-
     filename = 'settings.json'
     with open(filename, 'r+') as f:
         courselist = json.load(f)
@@ -93,10 +81,25 @@ def main():
         teeTimes = {}
         teetimeinfo = []
         keys = []
+
         inp = input(
             "\nEnter 1 for today, 2 for tomorrow, or any day after following the format yyyy-mm-dd. If months or days are single digit, do not enter a 0.\n")
         for course in courselist['sources']:
             if courselist['sources'][course]['soup'] == 1 and courselist['sources'][course]['enabled'] == 1:
+
+                # get todays date
+                today = datetime.today().strftime('%Y-%m-%d')
+                tomorrow = datetime.today() + timedelta(days=1)
+                tomorrow = tomorrow.strftime('%Y-%m-%d')
+                if today[5] == "0":
+                    today = today[:5] + today[6:]
+                if today[7] == "0":
+                    today = today[:7] + today[8:]
+                if tomorrow[5] == "0":
+                    tomorrow = tomorrow[:5] + tomorrow[6:]
+                if tomorrow[7] == "0":
+                    tomorrow = tomorrow[:7] + tomorrow[8:]
+
                 thisurl = courselist['sources'][course]['url']
                 if inp == '1':
                     thisurl = thisurl.replace(
@@ -125,6 +128,64 @@ def main():
                         "<p class=\"xs-align-right\">", "")
                     playersString = playersString.replace("</p>", "")
                     playersArray.append(playersString)
+
+                for i in range(num):
+                    teetimeinfo.append(
+                        [timesArray[i], playersArray[i], courselist['sources'][course]['name']])
+                    numstring = "key" + \
+                        courselist['sources'][course]['id'] + "-" + str(i)
+                    keys.append(numstring)
+
+                teetimeinfo = sorted(teetimeinfo, key=lambda x: datetime.strptime(
+                    x[0], '%I:%M %p'))
+
+            # Search Les Bolstad
+            # 08-20-2020
+            # 2020-08-20
+            elif courselist['sources'][course]['soup'] == 0 and courselist['sources'][course]['enabled'] == 1:
+
+                # get todays date in dd-mm-yyyy
+                today = datetime.today().strftime('%m-%d-%Y')
+                tomorrow = datetime.today() + timedelta(days=1)
+                tomorrow = tomorrow.strftime('%m-%d-%Y')
+
+                thisurl = courselist['sources'][course]['url']
+                if inp == '1':
+                    thisurl = thisurl.replace(
+                        courselist['sources'][course]['datetag'], today)
+                elif inp == '2':
+                    thisurl = thisurl.replace(
+                        courselist['sources'][course]['datetag'], tomorrow)
+                else:
+                    thisurl = thisurl.replace(
+                        courselist['sources'][course]['datetag'], inp)
+
+                r = requests.get(thisurl)
+
+                timesArray = []
+                playersArray = []
+                num = 0
+
+                for teetime in r.json():
+                    # split time from 24hr to 12 hr
+                    time = teetime['time'].partition(' ')
+                    d = datetime.strptime(time[2], "%H:%M")
+                    d = d.strftime("%I:%M %p")
+                    if d[0] == "0":
+                        d = d[1:]
+                    timesArray.append(d)
+                    print(teetime['available_spots'])
+                    # Create text for number of available spots
+                    if str(teetime['available_spots']) == "1":
+                        playersArray.append(
+                            str(teetime['available_spots']) + ' Player')
+                    elif str(teetime['available_spots']) == "2":
+                        playersArray.append('1 to 2 Players')
+                    elif str(teetime['available_spots']) == "3":
+                        playersArray.append('1 to 3 Players')
+                    elif str(teetime['available_spots']) == "4":
+                        playersArray.append('1 to 4 Players')
+                    num += 1
 
                 for i in range(num):
                     teetimeinfo.append(
