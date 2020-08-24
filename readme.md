@@ -9,9 +9,9 @@ As of August 24th, 2020, only the following courses are supported:
 
 To run application:
 
-cd /golfer/dist
+	cd /golfer/dist
 
-./golfnow/golfnow
+	./golfnow/golfnow
 
 
 Configuration:
@@ -19,13 +19,12 @@ Configuration:
 	(To list enabled/disabled courses)
 
 	./golfnow/golfnow --config
-
+----
 
 	(To enable/disbale courses)
 	./golfnow/golfnow --enable <course id>
 	./golfnow/golfnow --disable <course id>
-
-
+----
 	examples:
 
 	Enable Theodore Wirth
