@@ -16,13 +16,15 @@ cd /golfer/dist
 
 Configuration:
 
-(To list enabled/disabled courses)
+	(To list enabled/disabled courses)
 
-./golfnow/golfnow --config
+	./golfnow/golfnow --config
 
-(To enable/disbale courses)
-./golfnow/golfnow --enable <course id>
-./golfnow/golfnow --disable <course id>
+
+	(To enable/disbale courses)
+	./golfnow/golfnow --enable <course id>
+	./golfnow/golfnow --disable <course id>
+
 
 	examples:
 
