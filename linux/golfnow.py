@@ -5,7 +5,6 @@ import json
 import os
 import argparse
 from tabulate import tabulate
-import feedparser
 import random
 from datetime import datetime, date, time, timedelta
 
@@ -229,21 +228,25 @@ def main():
                             d = d[1:]
                         if not teetime['restrictions']:
                             timesArray.append(d)
+                            if len(teetime['green_fees']) == 1:
+                                playersArray.append('1 Player')
+                            elif len(teetime['gree_fees']) == 2:
+                                playersArray.append('1 to 2 Players')
+                            elif len(teetime['gree_fees']) == 3:
+                                playersArray.append('1 to 3 Players')
+                            elif len(teetime['gree_fees']) == 4:
+                                playersArray.append('1 to 4 Players')
                         else:
                             timesArray.append(d + "*")
+                            if len(teetime['green_fees']) == 1:
+                                playersArray.append('1 Player *')
+                            elif len(teetime['gree_fees']) == 2:
+                                playersArray.append('1 to 2 Players *')
+                            elif len(teetime['gree_fees']) == 3:
+                                playersArray.append('1 to 3 Players *')
+                            elif len(teetime['gree_fees']) == 4:
+                                playersArray.append('1 to 4 Players *')
 
-                        # Find number of available spots
-                        numberOfPlayers = teetime['green_fees'].count()
-
-                        if str(teetime['available_spots']) == "1":
-                            playersArray.append(
-                                str(teetime['available_spots']) + ' Player')
-                        elif str(teetime['available_spots']) == "2":
-                            playersArray.append('1 to 2 Players')
-                        elif str(teetime['available_spots']) == "3":
-                            playersArray.append('1 to 3 Players')
-                        elif str(teetime['available_spots']) == "4":
-                            playersArray.append('1 to 4 Players')
                         num += 1
 
                 for i in range(num):
