@@ -1,5 +1,6 @@
 This executable finds tee times for golf courses in the Minneapolis-St.Paul area.
 As of August 24th, 2020, only the following courses are supported:
+	
 	Meadowbrook
 	Theodore Wirth
 	Hiawatha
