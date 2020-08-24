@@ -140,9 +140,7 @@ def main():
                     x[0], '%I:%M %p'))
 
             # Search Les Bolstad
-            # 08-20-2020
-            # 2020-08-20
-            elif courselist['sources'][course]['soup'] == 0 and courselist['sources'][course]['enabled'] == 1:
+            elif courselist['sources'][course]['id'] == "4" and courselist['sources'][course]['enabled'] == 1:
 
                 # get todays date in dd-mm-yyyy
                 today = datetime.today().strftime('%m-%d-%Y')
@@ -186,6 +184,67 @@ def main():
                     elif str(teetime['available_spots']) == "4":
                         playersArray.append('1 to 4 Players')
                     num += 1
+
+                for i in range(num):
+                    teetimeinfo.append(
+                        [timesArray[i], playersArray[i], courselist['sources'][course]['name']])
+                    numstring = "key" + \
+                        courselist['sources'][course]['id'] + "-" + str(i)
+                    keys.append(numstring)
+
+                teetimeinfo = sorted(teetimeinfo, key=lambda x: datetime.strptime(
+                    x[0], '%I:%M %p'))
+
+            # Search Chomonix
+            elif courselist['sources'][course]['id'] == "8" and courselist['sources'][course]['enabled'] == 1:
+                # get todays date in yyyy-mm-dd
+                today = datetime.today().strftime('%Y-%m-%d')
+                tomorrow = datetime.today() + timedelta(days=1)
+                tomorrow = tomorrow.strftime('%Y-%m-%d')
+
+                thisurl = courselist['sources'][course]['url']
+                if inp == '1':
+                    thisurl = thisurl.replace(
+                        courselist['sources'][course]['datetag'], today)
+                elif inp == '2':
+                    thisurl = thisurl.replace(
+                        courselist['sources'][course]['datetag'], tomorrow)
+                else:
+                    thisurl = thisurl.replace(
+                        courselist['sources'][course]['datetag'], inp)
+
+                r = requests.get(thisurl)
+
+                timesArray = []
+                playersArray = []
+                num = 0
+                # Chomonix will not allow singles to book times unless a 2some or 3some has booked already. Mark these with asterisk
+                for teetime in r.json():
+                    if teetime['out_of_capacity'] == False:
+                        # split time from 24hr to 12 hr
+                        time = teetime['start_time']
+                        d = datetime.strptime(time, "%H:%M")
+                        d = d.strftime("%I:%M %p")
+                        if d[0] == "0":
+                            d = d[1:]
+                        if not teetime['restrictions']:
+                            timesArray.append(d)
+                        else:
+                            timesArray.append(d + "*")
+
+                        # Find number of available spots
+                        numberOfPlayers = teetime['green_fees'].count()
+
+                        if str(teetime['available_spots']) == "1":
+                            playersArray.append(
+                                str(teetime['available_spots']) + ' Player')
+                        elif str(teetime['available_spots']) == "2":
+                            playersArray.append('1 to 2 Players')
+                        elif str(teetime['available_spots']) == "3":
+                            playersArray.append('1 to 3 Players')
+                        elif str(teetime['available_spots']) == "4":
+                            playersArray.append('1 to 4 Players')
+                        num += 1
 
                 for i in range(num):
                     teetimeinfo.append(

@@ -91,12 +91,12 @@
         },
         "8": {
             "name": "Chomonix",
-            "url": "https://www.chronogolf.com/marketplace/clubs/8349/teetimes?date=2020-08-20&course_id=9640&affiliation_type_ids%5B%5D=34218&affiliation_type_ids%5B%5D=34218&affiliation_type_ids%5B%5D=34218&affiliation_type_ids%5B%5D=34218&nb_holes=18",
+            "url": "https://www.chronogolf.com/marketplace/clubs/8349/teetimes?date=2020-08-20&course_id=9640&affiliation_type_ids%5B%5D=34218&nb_holes=18",
             "id": "8",
             "distance": 22,
-            "enabled": 0,
+            "enabled": 1,
             "pcc": 1,
-            "datetag": "2020-8-20",
+            "datetag": "2020-08-20",
             "playertag": "Player=99",
             "soup": 0
         },
