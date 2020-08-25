@@ -4,7 +4,7 @@ block_cipher = None
 
 
 a = Analysis(['golfnow.py'],
-             pathex=['/Users/lundergust/codes/golf/golfer'],
+             pathex=['/Users/lundergust/codes/golf/golfer/macOS'],
              binaries=[],
              datas=[],
              hiddenimports=[],

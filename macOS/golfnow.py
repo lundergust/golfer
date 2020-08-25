@@ -80,6 +80,10 @@ def main():
         teeTimes = {}
         teetimeinfo = []
         keys = []
+        timesArray = []
+        playersArray = []
+        num = 0
+        errmsg = ""
 
         inp = input(
             "\nEnter 1 for today, 2 for tomorrow, or any day after following the format yyyy-mm-dd. If months or days are single digit, do not enter a 0.\n")
@@ -113,9 +117,6 @@ def main():
                 html = urllib.request.urlopen(thisurl).read()
                 soup = BeautifulSoup(html, features='lxml')
 
-                timesArray = []
-                playersArray = []
-                num = 0
                 for times in soup.findAll(attrs={'class': 'timeDiv timeDisplay'}):
                     timesString = str(times.contents[1]).replace("</span>", "")
                     timesString = str(timesString).replace("<span>", "")
@@ -126,7 +127,10 @@ def main():
                     playersString = str(players).replace(
                         "<p class=\"xs-align-right\">", "")
                     playersString = playersString.replace("</p>", "")
-                    playersArray.append(playersString)
+                    if playersString == "Single Only":
+                        playersArray.append("1 Player      ")
+                    else:
+                        playersArray.append(playersString)
 
                 for i in range(num):
                     teetimeinfo.append(
@@ -134,9 +138,6 @@ def main():
                     numstring = "key" + \
                         courselist['sources'][course]['id'] + "-" + str(i)
                     keys.append(numstring)
-
-                teetimeinfo = sorted(teetimeinfo, key=lambda x: datetime.strptime(
-                    x[0], '%I:%M %p'))
 
             # Search Les Bolstad
             elif courselist['sources'][course]['id'] == "4" and courselist['sources'][course]['enabled'] == 1:
@@ -159,10 +160,6 @@ def main():
 
                 r = requests.get(thisurl)
 
-                timesArray = []
-                playersArray = []
-                num = 0
-
                 for teetime in r.json():
                     # split time from 24hr to 12 hr
                     time = teetime['time'].partition(' ')
@@ -171,7 +168,7 @@ def main():
                     if d[0] == "0":
                         d = d[1:]
                     timesArray.append(d)
-                    print(teetime['available_spots'])
+
                     # Create text for number of available spots
                     if str(teetime['available_spots']) == "1":
                         playersArray.append(
@@ -191,17 +188,14 @@ def main():
                         courselist['sources'][course]['id'] + "-" + str(i)
                     keys.append(numstring)
 
-                teetimeinfo = sorted(teetimeinfo, key=lambda x: datetime.strptime(
-                    x[0], '%I:%M %p'))
-
-            # Search Chomonix
+            # Search Chomonix for single times
             elif courselist['sources'][course]['id'] == "8" and courselist['sources'][course]['enabled'] == 1:
                 # get todays date in yyyy-mm-dd
                 today = datetime.today().strftime('%Y-%m-%d')
                 tomorrow = datetime.today() + timedelta(days=1)
                 tomorrow = tomorrow.strftime('%Y-%m-%d')
 
-                thisurl = courselist['sources'][course]['url']
+                thisurl = courselist['sources'][course]['singlesurl']
                 if inp == '1':
                     thisurl = thisurl.replace(
                         courselist['sources'][course]['datetag'], today)
@@ -214,51 +208,36 @@ def main():
 
                 r = requests.get(thisurl)
 
-                timesArray = []
-                playersArray = []
-                num = 0
+                # Create disclaimer for Chomonix data
+                errmsg = "* Chomonix will not allow singles to book a time if a foursome is available. Check the following website for more booking information: \n" + thisurl
+
                 # Chomonix will not allow singles to book times unless a 2some or 3some has booked already. Mark these with asterisk
                 for teetime in r.json():
-                    if teetime['out_of_capacity'] == False:
+                    if not teetime['restrictions'] and not teetime['out_of_capacity'] == True:
                         # split time from 24hr to 12 hr
                         time = teetime['start_time']
                         d = datetime.strptime(time, "%H:%M")
                         d = d.strftime("%I:%M %p")
                         if d[0] == "0":
                             d = d[1:]
-                        if not teetime['restrictions']:
                             timesArray.append(d)
                             if len(teetime['green_fees']) == 1:
-                                playersArray.append('1 Player')
-                            elif len(teetime['gree_fees']) == 2:
-                                playersArray.append('1 to 2 Players')
-                            elif len(teetime['gree_fees']) == 3:
-                                playersArray.append('1 to 3 Players')
-                            elif len(teetime['gree_fees']) == 4:
-                                playersArray.append('1 to 4 Players')
+                                playersArray.append('>= 1 Players  ')
                         else:
-                            timesArray.append(d + "*")
+                            timesArray.append(d)
                             if len(teetime['green_fees']) == 1:
-                                playersArray.append('1 Player *')
-                            elif len(teetime['gree_fees']) == 2:
-                                playersArray.append('1 to 2 Players *')
-                            elif len(teetime['gree_fees']) == 3:
-                                playersArray.append('1 to 3 Players *')
-                            elif len(teetime['gree_fees']) == 4:
-                                playersArray.append('1 to 4 Players *')
-
+                                playersArray.append('>= 1 Players  ')
                         num += 1
 
                 for i in range(num):
                     teetimeinfo.append(
-                        [timesArray[i], playersArray[i], courselist['sources'][course]['name']])
+                        [timesArray[i], playersArray[i], courselist['sources'][course]['name']+' *'])
                     numstring = "key" + \
                         courselist['sources'][course]['id'] + "-" + str(i)
                     keys.append(numstring)
 
-                teetimeinfo = sorted(teetimeinfo, key=lambda x: datetime.strptime(
-                    x[0], '%I:%M %p'))
-
+        teetimeinfo = sorted(teetimeinfo, key=lambda x: datetime.strptime(
+            x[0], '%I:%M %p'))
         bookingInfo = ["Time", "Players", "Course"]
 
         ikey = 0
@@ -270,6 +249,7 @@ def main():
 
         headers = ["Course", "Time", "Players"]
         timestr = "00"
+        print('\n')
         for key, value in teeTimes.items():
             if type(value) == dict:
                 if value["Time"][:2] != timestr:
@@ -277,6 +257,8 @@ def main():
                 print(value["Time"] + "   ---   " +
                       value["Players"] + "   ---   " + value["Course"])
                 timestr = value["Time"][:2]
+
+        print('\n' + errmsg + '\n')
 
     os.remove(filename)
     with open(filename, 'w') as f:
