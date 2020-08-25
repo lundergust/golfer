@@ -15,9 +15,10 @@ def main():
         courselist = json.load(f)
 
     parser = argparse.ArgumentParser()
-    parser.add_argument('--config', action='store_true')
-    parser.add_argument('--enable')
-    parser.add_argument('--disable')
+    parser.add_argument('-C', '--config', action='store_true')
+    parser.add_argument('-E', '--enable')
+    parser.add_argument('-D', '--disable')
+    parser.add_argument('-P', '--players', help='Set number of players')
     args = parser.parse_args()
 
     if args.config:
@@ -74,6 +75,9 @@ def main():
                       ['name'], "has been disabled.")
             except:
                 print(args.disable + "is not on course list")
+    elif args.players:
+        courselist['settings']['Players'] = int(args.players)
+        print('Number of players set to %s' % args.players)
     else:
         # Begin Parsing
         # Start with all that require beaufitul soup
@@ -117,20 +121,45 @@ def main():
                 html = urllib.request.urlopen(thisurl).read()
                 soup = BeautifulSoup(html, features='lxml')
 
-                for times in soup.findAll(attrs={'class': 'timeDiv timeDisplay'}):
-                    timesString = str(times.contents[1]).replace("</span>", "")
-                    timesString = str(timesString).replace("<span>", "")
-                    timesArray.append(timesString)
-                    num += 1
-
+                # Check number of players first
+                skiplist = []
+                skip = 0
+                playercheck = 0
                 for players in soup.findAll(attrs={'class': 'xs-align-right'}):
                     playersString = str(players).replace(
                         "<p class=\"xs-align-right\">", "")
                     playersString = playersString.replace("</p>", "")
+
                     if playersString == "Single Only":
-                        playersArray.append("1 Player      ")
+                        playercheck = 1
+                    elif playersString == "1 to 2 Players":
+                        playercheck = 2
+                    elif playersString == "1 to 3 Players":
+                        playercheck = 3
                     else:
-                        playersArray.append(playersString)
+                        playercheck = 4
+
+                    if playercheck < courselist['settings']['Players']:
+                        skiplist.append(skip)
+                        skip += 1
+                    else:
+                        skip += 1
+                        if playersString == "Single Only":
+                            playersArray.append("1 Player      ")
+                        else:
+                            playersArray.append(playersString)
+                # Reset Skip counter
+                skip = 0
+                for times in soup.findAll(attrs={'class': 'timeDiv timeDisplay'}):
+                    if skip in skiplist:
+                        skip += 1
+                    else:
+                        timesString = str(
+                            times.contents[1]).replace("</span>", "")
+                        timesString = str(timesString).replace("<span>", "")
+                        timesArray.append(timesString)
+                        num += 1
+                        skip += 1
 
                 for i in range(num):
                     teetimeinfo.append(
@@ -160,26 +189,36 @@ def main():
 
                 r = requests.get(thisurl)
 
+                # Check number of players first
+                skiplist = []
+                skip = 0
+                playercheck = 0
+                addString = ''
                 for teetime in r.json():
-                    # split time from 24hr to 12 hr
-                    time = teetime['time'].partition(' ')
-                    d = datetime.strptime(time[2], "%H:%M")
-                    d = d.strftime("%I:%M %p")
-                    if d[0] == "0":
-                        d = d[1:]
-                    timesArray.append(d)
 
                     # Create text for number of available spots
                     if str(teetime['available_spots']) == "1":
-                        playersArray.append(
-                            str(teetime['available_spots']) + ' Player')
+                        playercheck = 1
+                        addString = str(teetime['available_spots']) + ' Player'
                     elif str(teetime['available_spots']) == "2":
-                        playersArray.append('1 to 2 Players')
+                        playercheck = 2
+                        addString = '1 to 2 Players'
                     elif str(teetime['available_spots']) == "3":
-                        playersArray.append('1 to 3 Players')
+                        playercheck = 3
+                        addString = '1 to 3 Players'
                     elif str(teetime['available_spots']) == "4":
-                        playersArray.append('1 to 4 Players')
-                    num += 1
+                        playercheck = 4
+                        addString = '1 to 4 Players'
+                    if playercheck >= courselist['settings']['Players']:
+                        playersArray.append(addString)
+                        # split time from 24hr to 12 hr
+                        time = teetime['time'].partition(' ')
+                        d = datetime.strptime(time[2], "%H:%M")
+                        d = d.strftime("%I:%M %p")
+                        if d[0] == "0":
+                            d = d[1:]
+                        timesArray.append(d)
+                        num += 1
 
                 for i in range(num):
                     teetimeinfo.append(
