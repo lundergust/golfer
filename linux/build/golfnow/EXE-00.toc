@@ -34,7 +34,7 @@
  [],
  False,
  False,
- 1598297878,
+ 1598373351,
  [('run',
    '/home/lundergust/.local/lib/python3.6/site-packages/PyInstaller/bootloader/Linux-64bit/run',
    'EXECUTABLE')])
